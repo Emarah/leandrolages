@@ -17,3 +17,4 @@ WHERE Event_Type= 'opened');
 
 COMMIT;
 
+
