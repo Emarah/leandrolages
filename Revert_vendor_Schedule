@@ -1,0 +1,8 @@
+
+START TRANSACTION;
+
+truncate table vendor_schedule;
+insert into vendor_schedule (select * from bckp_vendor_schedule);
+drop table bckp_vendor_schedule;
+
+COMMIT;
