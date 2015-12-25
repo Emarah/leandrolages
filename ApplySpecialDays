@@ -1,0 +1,19 @@
+START TRANSACTION;
+
+CREATE TABLE bckp_vendor_schedule AS (SELECT * FROM vendor_schedule);
+
+DELETE tbl.*
+FROM vendor_schedule tbl
+INNER JOIN (
+SELECT vs.ID,vs.Week_Day,vsd.All_Day,vsd.Start_Hour,vsd.End_Hour,vsd.Event_Type
+FROM vendor_special_days vsd
+INNER JOIN vendor_schedule vs ON vsd.vendor_Id = vs.Vendor_Id AND vs.Week_Day = (DATEDIFF(vsd.Special_Date,'2015-12-21')+1)
+) del ON tbl.ID = del.ID;
+
+INSERT INTO vendor_schedule(vendor_id,week_day,all_day,start_hour,end_hour) (
+SELECT vendor_id, (DATEDIFF(Special_Date,'2015-12-21')+1),all_day,start_hour,end_hour
+FROM vendor_special_days
+WHERE Event_Type= 'opened'); 
+
+COMMIT;
+
